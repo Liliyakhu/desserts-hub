@@ -28,7 +28,7 @@ class CookAdmin(UserAdmin):
 @admin.register(Dessert)
 class DessertAdmin(admin.ModelAdmin):
     search_fields = ("name",)
-    list_filter = ("ingredients",)
+    list_filter = ("ingredients", "cooks")
 
 
 admin.site.register(DessertType)
