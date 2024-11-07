@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{#{% load crispy_forms_filters %}#}
+
+{% block content %}
+  <h1>
+    Desert Type List
+    <a href="{% url 'desserts:dessert-type-create' %}" class="btn btn-primary link-to-page">
+      Create
+    </a>
+  </h1>
+
+  <form action="" method="get" class="form-inline">
+{#    {{ search_form|crispy }}#}
+    {{ search_form }}
+    <input type="submit" value="🔎" class="btn btn-secondary form-control">
+  </form>
+  <br>
+  {% if dessert_type_list %}
+    <table class="table">
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Update</th>
+        <th>Delete</th>
+      </tr>
+
+      {% for dessert_type in dessert_type_list %}
+        <tr>
+          <td>
+            {{ dessert_type.id }}
+          </td>
+          <td>
+            {{ dessert_type.name }}
+          </td>
+          <td>
+            <a href="{% url 'desserts:dessert-type-update' pk=dessert_type.id %}">
+              Update
+            </a>
+          </td>
+          <td>
+            <a style="color: red"
+               href="{% url 'desserts:dessert-type-delete' pk=dessert_type.id %}">
+              Delete
+            </a>
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+
+  {% else %}
+    <p>There are no dessert types in the service.</p>
+  {% endif %}
+{% endblock %}

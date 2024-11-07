@@ -6,6 +6,11 @@ from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from desserts.models import DessertType, Cook, Ingredient, Dessert
+from desserts.forms import (
+    DessertTypeSearchForm,
+    IngredientSearchForm,
+)
+
 # from desserts.forms import (
 #     DriverCreationForm,
 #     DriverLicenseUpdateForm,
@@ -14,6 +19,9 @@ from desserts.models import DessertType, Cook, Ingredient, Dessert
 #     CarSearchForm,
 #     ManufacturerSearchForm
 # )
+
+
+# INDEX VIEW
 
 
 @login_required
@@ -37,3 +45,97 @@ def index(request):
     }
 
     return render(request, "desserts/index.html", context=context)
+
+
+# DESSERT TYPE VIEWS
+
+
+class DessertTypeListView(LoginRequiredMixin, generic.ListView):
+    model = DessertType
+    context_object_name = "dessert_type_list"
+    template_name = "desserts/dessert_type_list.html"
+    paginate_by = 3
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(DessertTypeListView, self).get_context_data(**kwargs)
+        name = self.request.GET.get("name")
+        context["search_form"] = DessertTypeSearchForm(
+            initial={"name": name}
+        )
+        return context
+
+    def get_queryset(self):
+        queryset = DessertType.objects.all()
+        form = DessertTypeSearchForm(self.request.GET)
+        if form.is_valid():
+            return queryset.filter(
+                name__icontains=form.cleaned_data["name"]
+            )
+        return queryset
+
+
+class DessertTypeCreateView(LoginRequiredMixin, generic.CreateView):
+    model = DessertType
+    fields = "__all__"
+    success_url = reverse_lazy("desserts:dessert-type-list")
+    template_name = "desserts/dessert_type_form.html"
+
+
+class DessertTypeUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = DessertType
+    fields = "__all__"
+    success_url = reverse_lazy("desserts:dessert-type-list")
+    template_name = "desserts/dessert_type_form.html"
+
+
+class DessertTypeDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = DessertType
+    success_url = reverse_lazy("desserts:dessert-type-list")
+    template_name = "desserts/dessert_type_confirm_delete.html"
+
+
+# INGREDIENT VIEWS
+
+
+class IngredientListView(LoginRequiredMixin, generic.ListView):
+    model = Ingredient
+    context_object_name = "ingredient_list"
+    template_name = "desserts/ingredient_list.html"
+    paginate_by = 3
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(IngredientListView, self).get_context_data(**kwargs)
+        name = self.request.GET.get("name")
+        context["search_form"] = IngredientSearchForm(
+            initial={"name": name}
+        )
+        return context
+
+    def get_queryset(self):
+        queryset = Ingredient.objects.all()
+        form = IngredientSearchForm(self.request.GET)
+        if form.is_valid():
+            return queryset.filter(
+                name__icontains=form.cleaned_data["name"]
+            )
+        return queryset
+
+
+class IngredientCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Ingredient
+    fields = "__all__"
+    success_url = reverse_lazy("desserts:ingredient-list")
+    template_name = "desserts/ingredient_form.html"
+
+
+class IngredientUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Ingredient
+    fields = "__all__"
+    success_url = reverse_lazy("desserts:ingredient-list")
+    template_name = "desserts/ingredient_form.html"
+
+
+class IngredientDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Ingredient
+    success_url = reverse_lazy("desserts:ingredient-list")
+    template_name = "desserts/ingredient_confirm_delete.html"
