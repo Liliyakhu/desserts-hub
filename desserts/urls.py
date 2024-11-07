@@ -10,6 +10,12 @@ from desserts.views import (
     IngredientCreateView,
     IngredientUpdateView,
     IngredientDeleteView,
+    DessertListView,
+    DessertDetailView,
+    DessertCreateView,
+    DessertUpdateView,
+    DessertDeleteView,
+    toggle_add_dessert_to_cook_list,
 )
 
 urlpatterns = [
@@ -53,6 +59,36 @@ urlpatterns = [
         "ingredients/<int:pk>/delete/",
         IngredientDeleteView.as_view(),
         name="ingredient-delete",
+    ),
+    path(
+        "desserts/",
+        DessertListView.as_view(),
+        name="dessert-list",
+    ),
+    path(
+        "desserts/<int:pk>/",
+        DessertDetailView.as_view(),
+        name="dessert-detail",
+    ),
+    path(
+        "desserts/create/",
+        DessertCreateView.as_view(),
+        name="dessert-create",
+    ),
+    path(
+        "desserts/<int:pk>/update/",
+        DessertUpdateView.as_view(),
+        name="dessert-update",
+    ),
+    path(
+        "desserts/<int:pk>/delete/",
+        DessertDeleteView.as_view(),
+        name="dessert-delete",
+    ),
+    path(
+        "desserts/<int:pk>/toggle-add/",
+        toggle_add_dessert_to_cook_list,
+        name="toggle-add-dessert",
     ),
 ]
 

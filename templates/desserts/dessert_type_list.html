@@ -3,7 +3,7 @@
 
 {% block content %}
   <h1>
-    Desert Type List
+    Dessert Type List
     <a href="{% url 'desserts:dessert-type-create' %}" class="btn btn-primary link-to-page">
       Create
     </a>
@@ -27,7 +27,8 @@
       {% for dessert_type in dessert_type_list %}
         <tr>
           <td>
-            {{ dessert_type.id }}
+{#            {{ dessert_type.id }}#}
+            {{ page_obj.start_index|add:forloop.counter0 }}
           </td>
           <td>
             {{ dessert_type.name }}

@@ -9,6 +9,8 @@ from desserts.models import DessertType, Cook, Ingredient, Dessert
 from desserts.forms import (
     DessertTypeSearchForm,
     IngredientSearchForm,
+    DessertSearchForm,
+    DessertForm,
 )
 
 # from desserts.forms import (
@@ -112,7 +114,7 @@ class IngredientListView(LoginRequiredMixin, generic.ListView):
         return context
 
     def get_queryset(self):
-        queryset = Ingredient.objects.all()
+        queryset = Ingredient.objects.all().prefetch_related("desserts__ingredients")
         form = IngredientSearchForm(self.request.GET)
         if form.is_valid():
             return queryset.filter(
@@ -139,3 +141,62 @@ class IngredientDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Ingredient
     success_url = reverse_lazy("desserts:ingredient-list")
     template_name = "desserts/ingredient_confirm_delete.html"
+
+
+# DESSERT VIEWS
+
+
+class DessertListView(LoginRequiredMixin, generic.ListView):
+    model = Dessert
+    paginate_by = 3
+    queryset = Dessert.objects.select_related("dessert_type")
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(DessertListView, self).get_context_data(**kwargs)
+        name = self.request.GET.get("name")
+        context["search_form"] = DessertSearchForm(
+            initial={"name": name}
+        )
+        return context
+
+    def get_queryset(self):
+        queryset = Dessert.objects.select_related("dessert_type")
+        form = DessertSearchForm(self.request.GET)
+        if form.is_valid():
+            return queryset.filter(
+                name__icontains=form.cleaned_data["name"]
+            )
+        return queryset
+
+
+class DessertDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Dessert
+
+
+class DessertCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Dessert
+    form_class = DessertForm
+    success_url = reverse_lazy("desserts:dessert-list")
+
+
+class DessertUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Dessert
+    form_class = DessertForm
+    success_url = reverse_lazy("desserts:dessert-list")
+
+
+class DessertDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Dessert
+    success_url = reverse_lazy("desserts:dessert-list")
+
+
+@login_required
+def toggle_add_dessert_to_cook_list(request, pk):
+    cook = Cook.objects.get(id=request.user.id)
+    if (
+        Dessert.objects.get(id=pk) in cook.desserts.all()
+    ):  # probably could check if car exists
+        cook.desserts.remove(pk)
+    else:
+        cook.desserts.add(pk)
+    return HttpResponseRedirect(reverse_lazy("desserts:dessert-detail", args=[pk]))
