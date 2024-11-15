@@ -11,16 +11,10 @@ from desserts.forms import (
     IngredientSearchForm,
     DessertSearchForm,
     DessertForm,
+    CookSearchForm,
+    CookCreationForm,
+    CookExperienceUpdateForm,
 )
-
-# from desserts.forms import (
-#     DriverCreationForm,
-#     DriverLicenseUpdateForm,
-#     CarForm,
-#     DriverSearchForm,
-#     CarSearchForm,
-#     ManufacturerSearchForm
-# )
 
 
 # INDEX VIEW
@@ -200,3 +194,51 @@ def toggle_add_dessert_to_cook_list(request, pk):
     else:
         cook.desserts.add(pk)
     return HttpResponseRedirect(reverse_lazy("desserts:dessert-detail", args=[pk]))
+
+
+# COOK VIEWS
+
+
+class CookListView(LoginRequiredMixin, generic.ListView):
+    model = Cook
+    queryset = Cook.objects.prefetch_related("desserts__cooks")
+    paginate_by = 3
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(CookListView, self).get_context_data(**kwargs)
+        username = self.request.GET.get("username")
+        context["search_form"] = CookSearchForm(
+            initial={"username": username}
+        )
+        return context
+
+    def get_queryset(self):
+        queryset = Cook.objects.prefetch_related("desserts__cooks")
+        form = CookSearchForm(self.request.GET)
+        if form.is_valid():
+            return queryset.filter(
+                username__icontains=form.cleaned_data["username"]
+            )
+        return queryset
+
+
+class CookDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Cook
+    queryset = Cook.objects.all().prefetch_related("desserts__cooks")
+
+
+class CookCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Cook
+    form_class = CookCreationForm
+    # success_url = reverse_lazy("desserts:cook-list")
+
+
+class CookExperienceUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Cook
+    form_class = CookExperienceUpdateForm
+    success_url = reverse_lazy("desserts:cook-list")
+
+
+class CookDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Cook
+    success_url = reverse_lazy("desserts:cook-list")

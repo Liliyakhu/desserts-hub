@@ -10,7 +10,7 @@
   </h1>
 
   <form action="" method="get" class="form-inline">
-{#    {{ search_form|crispy }}#}
+    {#    {{ search_form|crispy }}#}
     {{ search_form }}
     <input type="submit" value="🔎" class="btn btn-secondary form-control">
   </form>
@@ -27,7 +27,7 @@
       {% for dessert_type in dessert_type_list %}
         <tr>
           <td>
-{#            {{ dessert_type.id }}#}
+            {#            {{ dessert_type.id }}#}
             {{ page_obj.start_index|add:forloop.counter0 }}
           </td>
           <td>
@@ -45,10 +45,15 @@
             </a>
           </td>
         </tr>
+{#        {% if forloop.counter|divisibleby:2 %}#}
+{#          <div class="row">bla</div>#}
+{#        {% endif %}#}
       {% endfor %}
     </table>
+
 
   {% else %}
     <p>There are no dessert types in the service.</p>
   {% endif %}
 {% endblock %}
+
