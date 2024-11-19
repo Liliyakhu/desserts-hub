@@ -16,7 +16,7 @@ class DessertType(models.Model):
 
 
 class Cook(AbstractUser):
-    years_of_experience = models.SmallIntegerField()
+    years_of_experience = models.IntegerField(default=0)
 
     class Meta:
         ordering = ["username"]
