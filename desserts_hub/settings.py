@@ -25,7 +25,10 @@ SECRET_KEY = "django-insecure-cti2$x%7(y#bb38fnvejcc++m!nn-q!zd%)b+h!6_e$dghl-sm
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+]
 
 
 # Application definition
@@ -129,3 +132,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "desserts.cook"
 
 LOGIN_REDIRECT_URL = "/"
+
+LOGIN_URL = 'login'
+
+SESSION_COOKIE_AGE = 1209600

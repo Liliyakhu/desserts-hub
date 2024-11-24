@@ -1,10 +1,36 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UsernameField
 from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
+
 
 from desserts.models import Ingredient, Dessert, Cook
 
+
+# LOGIN FORM
+
+
+class UserLoginForm(AuthenticationForm):
+    username = UsernameField(
+        widget=forms.TextInput(
+            attrs={"class": "form-control form-control-lg", "placeholder": "Username"}
+        )
+    )
+    password = forms.CharField(
+        label=_("Password"),
+        strip=False,
+        widget=forms.PasswordInput(attrs={"class": "form-control form-control-lg", "placeholder": "Password"}),
+    )
+    remember_me = forms.BooleanField(
+        required=False,
+        initial=False,
+        widget=forms.CheckboxInput(
+            attrs={
+                "class": "form-check-input"
+            }
+        )
+    )
 
 # DESSERT TYPE FORMS
 

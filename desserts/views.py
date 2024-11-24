@@ -1,6 +1,8 @@
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -14,7 +16,28 @@ from desserts.forms import (
     CookSearchForm,
     CookCreationForm,
     CookExperienceUpdateForm,
+    UserLoginForm,
 )
+
+# LOGIN AND LOGOUT VIEWS
+
+
+class UserLoginView(LoginView):
+    template_name = "accounts/login.html"
+    form_class = UserLoginForm
+
+    def form_valid(self, form):
+        remember_me = form.cleaned_data.get("remember_me")  # get remember me data from cleaned_data of form
+        if remember_me:
+            self.request.session.set_expiry(1209600)
+        else:
+            self.request.session.set_expiry(0)
+        return super().form_valid(form)
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('/accounts/login')
 
 
 # INDEX VIEW
