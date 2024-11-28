@@ -23,23 +23,25 @@
                 <p class="mb-0">Enter your username and password to sign in</p>
               </div>
               <div class="card-body">
-                <form method="post" action="{% url 'login' %}" role="form">
+{#                <form method="post" action="{% url 'login' %}" role="form" novalidate>#}
+                                <form method="post" action="{% url 'login' %}" role="form">
+
                   {% csrf_token %}
 
                   {% if form.non_field_errors %}
                     {% for error in form.non_field_errors %}
-                      <span class="text-danger"> {{ error }} </span>
+                      <span class="text-primary"> {{ error }} </span>
                     {% endfor %}
                   {% endif %}
 
                   <div class="mb-3">
                     {{ form.username }}
                   </div>
-                  <span class="text-danger"> {{ field.errors }} </span>
+                  <span class="text-primary"> {{ field.errors }} </span>
                   <div class="mb-3">
                     {{ form.password }}
                   </div>
-                  <span class="text-danger"> {{ field.errors }} </span>
+                  <span class="text-primary"> {{ field.errors }} </span>
 
                   <div class="form-check form-switch">
                     {{ form.remember_me }}

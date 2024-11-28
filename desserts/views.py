@@ -15,7 +15,7 @@ from desserts.forms import (
     DessertForm,
     CookSearchForm,
     CookCreationForm,
-    CookExperienceUpdateForm,
+    CookUpdateForm,
     UserLoginForm,
 )
 
@@ -29,7 +29,7 @@ class UserLoginView(LoginView):
     def form_valid(self, form):
         remember_me = form.cleaned_data.get("remember_me")  # get remember me data from cleaned_data of form
         if remember_me:
-            self.request.session.set_expiry(1209600)
+            self.request.session.set_expiry(10000)
         else:
             self.request.session.set_expiry(0)
         return super().form_valid(form)
@@ -81,6 +81,7 @@ class DessertTypeListView(LoginRequiredMixin, generic.ListView):
         context["search_form"] = DessertTypeSearchForm(
             initial={"name": name}
         )
+
         return context
 
     def get_queryset(self):
@@ -90,6 +91,10 @@ class DessertTypeListView(LoginRequiredMixin, generic.ListView):
             return queryset.filter(
                 name__icontains=form.cleaned_data["name"]
             )
+        return queryset
+
+    def my_queryset(self):
+        queryset = Dessert.objects.filter(dessert_type=self)
         return queryset
 
 
@@ -120,7 +125,7 @@ class IngredientListView(LoginRequiredMixin, generic.ListView):
     model = Ingredient
     context_object_name = "ingredient_list"
     template_name = "desserts/ingredient_list.html"
-    paginate_by = 3
+    paginate_by = 5
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(IngredientListView, self).get_context_data(**kwargs)
@@ -165,7 +170,7 @@ class IngredientDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 class DessertListView(LoginRequiredMixin, generic.ListView):
     model = Dessert
-    paginate_by = 3
+    paginate_by = 5
     queryset = Dessert.objects.select_related("dessert_type")
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -193,13 +198,18 @@ class DessertDetailView(LoginRequiredMixin, generic.DetailView):
 class DessertCreateView(LoginRequiredMixin, generic.CreateView):
     model = Dessert
     form_class = DessertForm
+    template_name = "desserts/dessert_form.html"
     success_url = reverse_lazy("desserts:dessert-list")
 
 
 class DessertUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Dessert
     form_class = DessertForm
-    success_url = reverse_lazy("desserts:dessert-list")
+    # success_url = reverse_lazy("desserts:dessert-list")
+
+    def get_success_url(self):
+        # Redirect to the detail view of the updated object
+        return reverse_lazy("desserts:dessert-detail", kwargs={'pk': self.object.pk})
 
 
 class DessertDeleteView(LoginRequiredMixin, generic.DeleteView):
@@ -225,7 +235,7 @@ def toggle_add_dessert_to_cook_list(request, pk):
 class CookListView(LoginRequiredMixin, generic.ListView):
     model = Cook
     queryset = Cook.objects.prefetch_related("desserts__cooks")
-    paginate_by = 3
+    paginate_by = 5
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(CookListView, self).get_context_data(**kwargs)
@@ -253,13 +263,19 @@ class CookDetailView(LoginRequiredMixin, generic.DetailView):
 class CookCreateView(LoginRequiredMixin, generic.CreateView):
     model = Cook
     form_class = CookCreationForm
-    # success_url = reverse_lazy("desserts:cook-list")
-
-
-class CookExperienceUpdateView(LoginRequiredMixin, generic.UpdateView):
-    model = Cook
-    form_class = CookExperienceUpdateForm
+    template_name = "desserts/cook_form.html"
     success_url = reverse_lazy("desserts:cook-list")
+
+
+class CookUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Cook
+    form_class = CookUpdateForm
+    template_name = "desserts/cook_form.html"
+    # success_url = reverse_lazy("desserts:cook-detail", kwargs={'pk': self.object.pk})
+
+    def get_success_url(self):
+        # Redirect to the detail view of the updated object
+        return reverse_lazy("desserts:cook-detail", kwargs={'pk': self.object.pk})
 
 
 class CookDeleteView(LoginRequiredMixin, generic.DeleteView):

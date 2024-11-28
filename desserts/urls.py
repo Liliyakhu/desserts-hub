@@ -19,7 +19,7 @@ from desserts.views import (
     CookListView,
     CookDetailView,
     CookCreateView,
-    CookExperienceUpdateView,
+    CookUpdateView,
     CookDeleteView,
 )
 
@@ -112,7 +112,7 @@ urlpatterns = [
     ),
     path(
         "cooks/<int:pk>/update/",
-        CookExperienceUpdateView.as_view(),
+        CookUpdateView.as_view(),
         name="cook-update",
     ),
     path(

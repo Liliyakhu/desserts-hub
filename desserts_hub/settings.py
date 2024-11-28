@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,10 +27,7 @@ SECRET_KEY = "django-insecure-cti2$x%7(y#bb38fnvejcc++m!nn-q!zd%)b+h!6_e$dghl-sm
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    "localhost",
-    "127.0.0.1",
-]
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -124,6 +123,10 @@ STATICFILES_DIRS = (BASE_DIR / "static",)
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
+MEDIA_URL = "/media/"
+
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
@@ -133,6 +136,10 @@ AUTH_USER_MODEL = "desserts.cook"
 
 LOGIN_REDIRECT_URL = "/"
 
-LOGIN_URL = 'login'
+LOGIN_URL = "login"
 
-SESSION_COOKIE_AGE = 1209600
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
+
+SESSION_COOKIE_AGE = 10000

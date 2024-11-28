@@ -1,0 +1,138 @@
+{% extends 'layouts/base_sections.html' %}
+{% load static %}
+
+{% block title %} Material Kit 2 by Creative Tim {% endblock title %}
+
+{% block body %} class="blog-author bg-gray-100" {% endblock body %}
+
+{% block header %}
+
+  {% include 'includes/navigation_light.html' %}
+
+{% endblock header %}
+
+{% block content %}
+
+  <!-- START Testimonials w/ user image & text & info -->
+  <section class="py-sm-7 py-5 position-relative">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 mx-auto">
+          <div class="row py-lg-5 py-3">
+
+            <div class="col-lg-2 col-md-1 col-sm-0"></div>
+            <div class="col-lg-8 col-md-10 col-sm-12 z-index-2 position-relative px-md-2 px-sm-5 mt-sm-0 mt-4">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h4 class="mb-0">Dessert Type List</h4>
+                <div class="d-block">
+                  <a type="button" class="btn btn-sm btn-outline-info text-nowrap mb-0"
+                     href="{% url 'desserts:dessert-type-create' %}">Create new dessert type</a>
+                </div>
+              </div>
+
+              <form action="" method="get" class="form-inline mb-4 mt-5" enctype="multipart/form-data">
+                {{ search_form }}
+              </form>
+              <br>
+
+              {% if dessert_type_list %}
+                <div class="row">
+                  <div class="col-1" style="font-weight: 800">
+                    No
+                  </div>
+                  <div class="col-3 col-lg-3" style="font-weight: 800">
+                    Name
+                  </div>
+                  <div class="col-4 col-lg-4" style="text-align: center; font-weight: 800">
+                    Update
+                  </div>
+                  <div class="col-4" style="text-align: center; font-weight: 800">
+                    Delete
+                  </div>
+                  <hr class="horizontal dark mt-2 mb-4">
+                  {% for dessert_type in dessert_type_list %}
+                    <div class="col-1">
+                      {#<a href="{{ dessert_type.get_absolute_url }}">{{ dessert_type.id }}</a>#}
+                      {{ page_obj.start_index|add:forloop.counter0 }}
+                    </div>
+                    <div class="col-3 col-lg-3">
+                      {{ dessert_type.name }}
+                    </div>
+                    <div class="col-4 col-lg-4" style="text-align: center">
+                      <a type="button" class="btn btn-sm btn-outline-dark text-nowrap mb-0"
+                         href="{% url 'desserts:dessert-type-update' pk=dessert_type.id %}">
+                        Update
+                      </a>
+                    </div>
+                    <div class="col-4" style="text-align: center">
+                      <a type="button" class="btn btn-sm btn-outline-primary text-nowrap mb-0"
+                         href="{% url 'desserts:dessert-type-delete' pk=dessert_type.id %}">
+                        Delete
+                      </a>
+                    </div>
+
+                    <!-- START Blogs w/ 4 cards w/ image & text & link -->
+                    <section class="py-3">
+                      <div class="container">
+                        <div class="row">
+                          <div class="col-lg-6">
+                            <p class="mb-4 text-info">Desserts with this type</p>
+                          </div>
+                        </div>
+                        <div class="row">
+
+                          {% for dessert in dessert_type.desserts.all %}
+
+                            <div class="col-lg-3 col-sm-6">
+                              <div class="card card-plain card-blog">
+                                <div class="card-image border-radius-lg position-relative">
+                                  <a href="javascript:;">
+                                    <img class="w-100 border-radius-lg move-on-hover shadow"
+                                         src="{{ dessert.image.url }}">
+                                  </a>
+                                </div>
+                                <div class="card-body px-0">
+                                  <p>
+                                    <a href="javascript:;" class="text-info font-weight-light">{{ dessert.name }}</a>
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+
+                            <!-- END Blogs w/ 4 cards w/ image & text & link -->
+
+                          {% endfor %}
+                        </div>
+                      </div>
+                    </section>
+
+                    <hr class="horizontal dark mt-0 mb-5">
+                  {% endfor %}
+                </div>
+
+              {% else %}
+                <p>There are no dessert types in this hub yet.</p>
+              {% endif %}
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- END Testimonials w/ user image & text & info -->
+
+
+{% endblock content %}
+
+{% block pagination %}
+
+  {% include "includes/pagination.html" %}
+
+{% endblock %}
+
+{% block footer %}
+
+  {% include 'includes/footer_fullscreen.html' %}
+
+{% endblock footer %}

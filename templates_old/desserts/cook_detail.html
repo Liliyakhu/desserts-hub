@@ -1,11 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
+  <div>
+    <img src="{{ cook.image.url }}" alt="" style="max-width: 200px" class="mt-0">
+  </div>
+
   <h1>
     Username: {{ cook.username }}
-  
-    <a href="{% url 'desserts:cook-update' pk=cook.id %}" class="btn btn-secondary link-to-page">
+
+    <a href="{% url 'desserts:cook-update-experience' pk=cook.id %}" class="btn btn-secondary link-to-page">
       Update years of experience
+    </a>
+  <a href="{% url 'desserts:cook-update-image' pk=cook.id %}" class="btn btn-secondary link-to-page">
+      Update image
     </a>
   </h1>
 
@@ -18,10 +25,10 @@
     <h4>Desserts</h4>
 
     {% for dessert in cook.desserts.all %}
-        <hr>
-        <p><strong>Name:</strong> {{ dessert.name }}</p>
-        <p><strong>Description:</strong> {{ dessert.description }}</p>
-        <p class="text-muted"><strong>Id:</strong> {{dessert.id}}</p>
+      <hr>
+      <p><strong>Name:</strong> {{ dessert.name }}</p>
+      <p><strong>Description:</strong> {{ dessert.description }}</p>
+      <p class="text-muted"><strong>Id:</strong> {{ dessert.id }}</p>
 
     {% empty %}
       <p>No desserts!</p>

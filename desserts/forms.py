@@ -42,6 +42,7 @@ class DessertTypeSearchForm(forms.Form):
         label="",
         widget=forms.TextInput(
             attrs={
+                "class": "form-control form-control-lg",
                 "placeholder": "Search by name"
             }
         )
@@ -58,6 +59,7 @@ class IngredientSearchForm(forms.Form):
         label="",
         widget=forms.TextInput(
             attrs={
+                "class": "form-control form-control-lg",
                 "placeholder": "Search by name"
             }
         )
@@ -74,6 +76,7 @@ class DessertSearchForm(forms.Form):
         label="",
         widget=forms.TextInput(
             attrs={
+                "class": "form-control form-control-lg",
                 "placeholder": "Search by name"
             }
         )
@@ -91,6 +94,14 @@ class DessertForm(forms.ModelForm):
         widget=forms.CheckboxSelectMultiple,
     )
 
+    image = forms.ImageField(
+        # initial="Image",
+        # required=False,
+        widget=forms.FileInput(
+            attrs={"class": "form-control form-control-lg", "placeholder": "Image"}
+        )
+    )
+
     class Meta:
         model = Dessert
         fields = "__all__"
@@ -100,25 +111,57 @@ class DessertForm(forms.ModelForm):
 
 
 class CookCreationForm(UserCreationForm):
+    image = forms.ImageField(
+        # initial="Image",
+        # required=False,
+        widget=forms.FileInput(
+            attrs={"class": "form-control form-control-lg", "placeholder": "Image"}
+        )
+    )
+
     class Meta(UserCreationForm.Meta):
         model = Cook
         fields = UserCreationForm.Meta.fields + (
             "years_of_experience",
             "first_name",
             "last_name",
+            "image",
         )
 
     def clean_years_of_experience(self):  # this logic is optional, but possible
         return validate_years_of_experience(self.cleaned_data["years_of_experience"])
 
+    def clean_image(self):  # this logic is optional, but possible
+        return validate_image(self.cleaned_data["image"])
 
-class CookExperienceUpdateForm(forms.ModelForm):
+
+class CookUpdateForm(forms.ModelForm):
+    image = forms.ImageField(
+        widget=forms.FileInput()
+    )
+
     class Meta:
         model = Cook
-        fields = ["years_of_experience"]
+        fields = ["years_of_experience", "image"]
 
     def clean_years_of_experience(self):
         return validate_years_of_experience(self.cleaned_data["years_of_experience"])
+
+    def clean_image(self):
+        return validate_image(self.cleaned_data["image"])
+
+
+# class CookImageUpdateForm(forms.ModelForm):
+#     image = forms.ImageField(
+#         widget=forms.FileInput()
+#     )
+#
+#     class Meta:
+#         model = Cook
+#         fields = ["image"]
+#
+#     def clean_image(self):
+#         return validate_image(self.cleaned_data["image"])
 
 
 def validate_years_of_experience(
@@ -132,6 +175,12 @@ def validate_years_of_experience(
     return years_of_experience
 
 
+def validate_image(
+    image,
+):
+    return image
+
+
 class CookSearchForm(forms.Form):
     username = forms.CharField(
         max_length=255,
@@ -139,6 +188,7 @@ class CookSearchForm(forms.Form):
         label="",
         widget=forms.TextInput(
             attrs={
+                "class": "form-control form-control-lg",
                 "placeholder": "Search by username"
             }
         )

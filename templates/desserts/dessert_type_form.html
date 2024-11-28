@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {#{% load crispy_forms_filters %}#}
 {% block content %}
-  <h1>{{ object|yesno:"Update,Create" }} Dessert</h1>
-  <form action="" method="post" novalidate enctype="multipart/form-data">
+  <h1>{{ object|yesno:"Update,Create" }} Dessert Type</h1>
+  <form action="" method="post" novalidate>
     {% csrf_token %}
 {#    {{ form|crispy }}#}
     {{ form.as_p }}
