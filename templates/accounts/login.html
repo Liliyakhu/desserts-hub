@@ -23,9 +23,8 @@
                 <p class="mb-0">Enter your username and password to sign in</p>
               </div>
               <div class="card-body">
-{#                <form method="post" action="{% url 'login' %}" role="form" novalidate>#}
-                                <form method="post" action="{% url 'login' %}" role="form">
-
+                {#                <form method="post" action="{% url 'login' %}" role="form" novalidate>#}
+                <form method="post" action="{% url 'login' %}" role="form">
                   {% csrf_token %}
 
                   {% if form.non_field_errors %}

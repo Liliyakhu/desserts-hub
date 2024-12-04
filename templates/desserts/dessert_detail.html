@@ -1,47 +1,156 @@
-{% extends "base.html" %}
+{% extends 'layouts/base_sections.html' %}
+{% load static %}
+
+{% block title %} Material Kit 2 by Creative Tim {% endblock title %}
+
+{% block body %} class="blog-author bg-gray-100" {% endblock body %}
+
+{% block header %}
+
+  {% include 'includes/navigation_light.html' %}
+
+{% endblock header %}
 
 {% block content %}
-  <h1>
-    {{ dessert.name }}
-    <a href="{% url 'desserts:dessert-update' pk=dessert.id %}" class="btn btn-secondary link-to-page">
-      Update
-    </a>
-    <a href="{% url 'desserts:dessert-delete' pk=dessert.id %}" class="btn btn-danger link-to-page">
-      Delete
-    </a>
-  </h1>
 
-  <img src="{{ dessert.image.url }}" alt="" style="max-width: 200px" class="mt-5">
+  <section class="py-sm-7 py-5 position-relative">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 mx-auto">
+          <div class="row py-lg-5 py-3">
+            <div class="col-lg-3 col-md-5 position-relative my-auto">
+              <a type="button" data-bs-toggle="modal" data-bs-target="#DessertBigModal">
+                <img class="img border-radius-lg max-width-200 w-100 position-relative z-index-2"
+                     src="{{ dessert.image.url }}" alt="dessert">
+              </a>
+            </div>
+            <div class="col-lg-7 col-md-7 z-index-2 position-relative px-md-2 px-sm-5 mt-sm-0 mt-4">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h4 class="mb-0">{{ dessert.name }}</h4>
+                <div class="d-block">
+                  <a type="button" class="btn btn-sm btn-outline-dark text-nowrap mb-0"
+                     href="{% url 'desserts:dessert-update' pk=dessert.id %}">Update</a>
+                  <a type="button" class="btn btn-sm btn-outline-primary text-nowrap mb-0"
+                     href="{% url 'desserts:dessert-delete' pk=dessert.id %}">Delete</a>
+                </div>
+              </div>
+              <div class="row mb-4">
+                <div class="col-auto">
+                  <span class="h6">Type: </span>
+                  <span>{{ dessert.dessert_type.name }}</span>
+                </div>
+              </div>
+              <p class="text-lg text-primary mb-0">
+                Price for 100 g, $: {{ dessert.price }}
+              </p>
+              <p class="text-lg mb-0">
+                {{ dessert.description }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <p>Dessert Type: ({{ dessert.dessert_type.name }}, {{ dessert.price }})</p>
-  <p>{{ dessert.description }}</p>
-  <h1>
-    Cooks
+  <section class="py-3">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6">
+          <h3 class="mb-5">Ingredients</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6">
+          {% for ingredient in dessert.ingredients.all %}
+            <li>{{ ingredient.name }}</li>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
 
-    {% if dessert in user.desserts.all %}
-      <a href="{% url 'desserts:toggle-add-dessert' pk=dessert.id %}" class="btn btn-danger link-to-page">
-        Delete this dessert from my list of desserts
-      </a>
-    {% else %}
-      <a href="{% url 'desserts:toggle-add-dessert' pk=dessert.id %}" class="btn btn-success link-to-page">
-        Add this dessert to my list of desserts
-      </a>
-    {% endif %}
+  <section class="py-3">
+    <div class="container">
+      <div class="row">
+        <div class="col-3 col-md-6">
+          <h3 class="mb-5">Cooks</h3>
+        </div>
+        <div class="col-9 col-md-6">
+          {% if dessert in user.desserts.all %}
+            <div class="d-block" style="text-align: right">
+              <a href="{% url 'desserts:toggle-add-dessert' pk=dessert.id %}" class="btn btn-primary link-to-page">
+                Delete this dessert from my list of desserts
+              </a>
+            </div>
+          {% else %}
+            <div class="" style="text-align: right">
+              <a href="{% url 'desserts:toggle-add-dessert' pk=dessert.id %}" class="btn btn-dark link-to-page">
+                Add this dessert to my list of desserts
+              </a>
+            </div>
+          {% endif %}
+        </div>
+      </div>
 
-  </h1>
-  <hr>
-  <ul>
-    {% for cook in dessert.cooks.all %}
-      <li>{{ cook.username }} ({{ cook.first_name }} {{ cook.last_name }})</li>
-    {% endfor %}
-  </ul>
-  <h1>
-    Ingredients
-  </h1>
-  <hr>
-  <ul>
-    {% for ingredient in dessert.ingredients.all %}
-      <li>{{ ingredient.name }}</li>
-    {% endfor %}
-  </ul>
-{% endblock %}
+      <div class="row">
+        {% if dessert.cooks.all %}
+          {% for cook in dessert.cooks.all %}
+
+            <div class="col-lg-3 col-sm-6">
+              <div class="card card-plain card-blog">
+                <div class="card-image border-radius-lg position-relative">
+                  <a href="{{ cook.get_absolute_url }}">
+                    <img class="w-100 border-radius-lg move-on-hover shadow"
+                         src="{{ cook.image.url }}">
+                  </a>
+                </div>
+                <div class="card-body px-0">
+                  <h5>
+                    <a href="javascript:;" class="text-dark font-weight-bold">{{ cook.username }}</a>
+                  </h5>
+                  <p>
+                    {{ cook.years_of_experience }} year{{ cook.years_of_experience|pluralize }} of experience.
+                  </p>
+                  <a href="{{ cook.get_absolute_url }}" class="text-info icon-move-right">More about this cook
+                    <i class="fas fa-arrow-right text-sm"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <p>No one cook can make this dessert.
+          </p>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal -->
+  <div class="modal fade" id="DessertBigModal" style="--bs-modal-width: 600px" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+{#        <div class="modal-header">#}
+{#          <h5 class="modal-title" id="exampleModalLabel">Your modal title</h5>#}
+{#          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>#}
+{#        </div>#}
+        <div class="modal-body align-content-center">
+          <img class="img border-radius-lg max-width-360 w-100 position-relative z-index-2"
+               src="{{ dessert.image.url }}" alt="dessert">
+        </div>
+{#        <div class="modal-footer justify-content-between">#}
+{#          <button type="button" class="btn bg-gradient-dark" data-bs-dismiss="modal">Close</button>#}
+{#          <button type="button" class="btn bg-gradient-primary">Save changes</button>#}
+{#        </div>#}
+      </div>
+    </div>
+  </div>
+
+{% endblock content %}
+
+{% block footer %}
+
+  {% include 'includes/footer_fullscreen.html' %}
+
+{% endblock footer %}

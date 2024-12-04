@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db.models.functions import Lower
 from django.urls import reverse
 
 from desserts_hub import settings
@@ -9,7 +10,7 @@ class DessertType(models.Model):
     name = models.CharField(max_length=50, unique=True)
 
     class Meta:
-        ordering = ["name"]
+        ordering = [Lower("name")]
 
     def __str__(self):
         return self.name

@@ -16,7 +16,7 @@ from desserts.forms import (
     CookSearchForm,
     CookCreationForm,
     CookUpdateForm,
-    UserLoginForm,
+    UserLoginForm, DessertTypeForm, IngredientForm,
 )
 
 # LOGIN AND LOGOUT VIEWS
@@ -93,21 +93,17 @@ class DessertTypeListView(LoginRequiredMixin, generic.ListView):
             )
         return queryset
 
-    def my_queryset(self):
-        queryset = Dessert.objects.filter(dessert_type=self)
-        return queryset
-
 
 class DessertTypeCreateView(LoginRequiredMixin, generic.CreateView):
     model = DessertType
-    fields = "__all__"
+    form_class = DessertTypeForm
     success_url = reverse_lazy("desserts:dessert-type-list")
     template_name = "desserts/dessert_type_form.html"
 
 
 class DessertTypeUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = DessertType
-    fields = "__all__"
+    form_class = DessertTypeForm
     success_url = reverse_lazy("desserts:dessert-type-list")
     template_name = "desserts/dessert_type_form.html"
 
@@ -147,14 +143,14 @@ class IngredientListView(LoginRequiredMixin, generic.ListView):
 
 class IngredientCreateView(LoginRequiredMixin, generic.CreateView):
     model = Ingredient
-    fields = "__all__"
+    form_class = IngredientForm
     success_url = reverse_lazy("desserts:ingredient-list")
     template_name = "desserts/ingredient_form.html"
 
 
 class IngredientUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Ingredient
-    fields = "__all__"
+    form_class = IngredientForm
     success_url = reverse_lazy("desserts:ingredient-list")
     template_name = "desserts/ingredient_form.html"
 
@@ -199,7 +195,11 @@ class DessertCreateView(LoginRequiredMixin, generic.CreateView):
     model = Dessert
     form_class = DessertForm
     template_name = "desserts/dessert_form.html"
-    success_url = reverse_lazy("desserts:dessert-list")
+    # success_url = reverse_lazy("desserts:dessert-list")
+
+    def get_success_url(self):
+        # Redirect to the detail view of the updated object
+        return reverse_lazy("desserts:dessert-detail", kwargs={'pk': self.object.pk})
 
 
 class DessertUpdateView(LoginRequiredMixin, generic.UpdateView):
@@ -264,7 +264,11 @@ class CookCreateView(LoginRequiredMixin, generic.CreateView):
     model = Cook
     form_class = CookCreationForm
     template_name = "desserts/cook_form.html"
-    success_url = reverse_lazy("desserts:cook-list")
+    # success_url = reverse_lazy("desserts:cook-list")
+
+    def get_success_url(self):
+        # Redirect to the detail view of the updated object
+        return reverse_lazy("desserts:cook-detail", kwargs={'pk': self.object.pk})
 
 
 class CookUpdateView(LoginRequiredMixin, generic.UpdateView):
