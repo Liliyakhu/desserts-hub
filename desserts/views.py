@@ -16,7 +16,9 @@ from desserts.forms import (
     CookSearchForm,
     CookCreationForm,
     CookUpdateForm,
-    UserLoginForm, DessertTypeForm, IngredientForm,
+    UserLoginForm,
+    DessertTypeForm,
+    IngredientForm,
 )
 
 # LOGIN AND LOGOUT VIEWS
@@ -27,7 +29,9 @@ class UserLoginView(LoginView):
     form_class = UserLoginForm
 
     def form_valid(self, form):
-        remember_me = form.cleaned_data.get("remember_me")  # get remember me data from cleaned_data of form
+        remember_me = form.cleaned_data.get(
+            "remember_me"
+        )  # get remember me data from cleaned_data of form
         if remember_me:
             self.request.session.set_expiry(10000)
         else:
@@ -37,7 +41,7 @@ class UserLoginView(LoginView):
 
 def logout_view(request):
     logout(request)
-    return redirect('/accounts/login')
+    return redirect("/accounts/login")
 
 
 # INDEX VIEW
@@ -78,9 +82,7 @@ class DessertTypeListView(LoginRequiredMixin, generic.ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(DessertTypeListView, self).get_context_data(**kwargs)
         name = self.request.GET.get("name")
-        context["search_form"] = DessertTypeSearchForm(
-            initial={"name": name}
-        )
+        context["search_form"] = DessertTypeSearchForm(initial={"name": name})
 
         return context
 
@@ -88,9 +90,7 @@ class DessertTypeListView(LoginRequiredMixin, generic.ListView):
         queryset = DessertType.objects.all()
         form = DessertTypeSearchForm(self.request.GET)
         if form.is_valid():
-            return queryset.filter(
-                name__icontains=form.cleaned_data["name"]
-            )
+            return queryset.filter(name__icontains=form.cleaned_data["name"])
         return queryset
 
 
@@ -126,18 +126,16 @@ class IngredientListView(LoginRequiredMixin, generic.ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(IngredientListView, self).get_context_data(**kwargs)
         name = self.request.GET.get("name")
-        context["search_form"] = IngredientSearchForm(
-            initial={"name": name}
-        )
+        context["search_form"] = IngredientSearchForm(initial={"name": name})
         return context
 
     def get_queryset(self):
-        queryset = Ingredient.objects.all().prefetch_related("desserts__ingredients")
+        queryset = (
+            Ingredient.objects.all().prefetch_related("desserts__ingredients")
+        )
         form = IngredientSearchForm(self.request.GET)
         if form.is_valid():
-            return queryset.filter(
-                name__icontains=form.cleaned_data["name"]
-            )
+            return queryset.filter(name__icontains=form.cleaned_data["name"])
         return queryset
 
 
@@ -172,18 +170,14 @@ class DessertListView(LoginRequiredMixin, generic.ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(DessertListView, self).get_context_data(**kwargs)
         name = self.request.GET.get("name")
-        context["search_form"] = DessertSearchForm(
-            initial={"name": name}
-        )
+        context["search_form"] = DessertSearchForm(initial={"name": name})
         return context
 
     def get_queryset(self):
         queryset = Dessert.objects.select_related("dessert_type")
         form = DessertSearchForm(self.request.GET)
         if form.is_valid():
-            return queryset.filter(
-                name__icontains=form.cleaned_data["name"]
-            )
+            return queryset.filter(name__icontains=form.cleaned_data["name"])
         return queryset
 
 
@@ -199,7 +193,9 @@ class DessertCreateView(LoginRequiredMixin, generic.CreateView):
 
     def get_success_url(self):
         # Redirect to the detail view of the updated object
-        return reverse_lazy("desserts:dessert-detail", kwargs={'pk': self.object.pk})
+        return reverse_lazy(
+            "desserts:dessert-detail", kwargs={"pk": self.object.pk}
+        )
 
 
 class DessertUpdateView(LoginRequiredMixin, generic.UpdateView):
@@ -209,7 +205,9 @@ class DessertUpdateView(LoginRequiredMixin, generic.UpdateView):
 
     def get_success_url(self):
         # Redirect to the detail view of the updated object
-        return reverse_lazy("desserts:dessert-detail", kwargs={'pk': self.object.pk})
+        return reverse_lazy(
+            "desserts:dessert-detail", kwargs={"pk": self.object.pk}
+        )
 
 
 class DessertDeleteView(LoginRequiredMixin, generic.DeleteView):
@@ -226,7 +224,9 @@ def toggle_add_dessert_to_cook_list(request, pk):
         cook.desserts.remove(pk)
     else:
         cook.desserts.add(pk)
-    return HttpResponseRedirect(reverse_lazy("desserts:dessert-detail", args=[pk]))
+    return HttpResponseRedirect(reverse_lazy(
+        "desserts:dessert-detail", args=[pk])
+    )
 
 
 # COOK VIEWS
@@ -240,9 +240,7 @@ class CookListView(LoginRequiredMixin, generic.ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(CookListView, self).get_context_data(**kwargs)
         username = self.request.GET.get("username")
-        context["search_form"] = CookSearchForm(
-            initial={"username": username}
-        )
+        context["search_form"] = CookSearchForm(initial={"username": username})
         return context
 
     def get_queryset(self):
@@ -268,18 +266,21 @@ class CookCreateView(LoginRequiredMixin, generic.CreateView):
 
     def get_success_url(self):
         # Redirect to the detail view of the updated object
-        return reverse_lazy("desserts:cook-detail", kwargs={'pk': self.object.pk})
+        return reverse_lazy(
+            "desserts:cook-detail", kwargs={"pk": self.object.pk}
+        )
 
 
 class CookUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Cook
     form_class = CookUpdateForm
     template_name = "desserts/cook_form.html"
-    # success_url = reverse_lazy("desserts:cook-detail", kwargs={'pk': self.object.pk})
 
     def get_success_url(self):
         # Redirect to the detail view of the updated object
-        return reverse_lazy("desserts:cook-detail", kwargs={'pk': self.object.pk})
+        return reverse_lazy(
+            "desserts:cook-detail", kwargs={"pk": self.object.pk}
+        )
 
 
 class CookDeleteView(LoginRequiredMixin, generic.DeleteView):

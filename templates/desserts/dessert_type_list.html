@@ -13,13 +13,11 @@
 
 {% block content %}
 
-  <!-- START Testimonials w/ user image & text & info -->
   <section class="pt-sm-7 pt-5 position-relative">
     <div class="container">
       <div class="row">
         <div class="col-12 mx-auto">
           <div class="row pt-lg-5 pt-3">
-
             <div class="col-lg-2 col-md-1 col-sm-0"></div>
             <div class="col-lg-8 col-md-10 col-sm-12 z-index-2 position-relative px-md-2 px-sm-5 mt-sm-0 mt-4">
               <div class="d-flex justify-content-between align-items-center mb-2">
@@ -29,12 +27,10 @@
                      href="{% url 'desserts:dessert-type-create' %}">Create new dessert type</a>
                 </div>
               </div>
-
               <form action="" method="get" class="form-inline mb-4 mt-5" enctype="multipart/form-data">
                 {{ search_form }}
               </form>
               <br>
-
               {% if dessert_type_list %}
                 <div class="row">
                   <div class="col-1" style="font-weight: 800">
@@ -44,10 +40,8 @@
                     Name
                   </div>
                   <div class="col-4 col-md-3" style="text-align: center; font-weight: 800">
-                    
                   </div>
                   <div class="col-4 col-md-3" style="text-align: center; font-weight: 800">
-                    
                   </div>
                   <hr class="horizontal dark mt-2 mb-4">
                   {% for dessert_type in dessert_type_list %}
@@ -70,7 +64,6 @@
                         Delete
                       </a>
                     </div>
-
                     <!-- START Blogs w/ 4 cards w/ image & text & link -->
                     <section class="py-3">
                       <div class="container">
@@ -86,23 +79,23 @@
                             <div class="col-lg-3 col-sm-6">
                               <div class="card card-plain card-blog">
                                 <div class="card-image border-radius-lg position-relative">
-                                  <a href="javascript:;">
+                                  <a href="{{ dessert.get_absolute_url }}">
                                     <img class="w-100 border-radius-lg move-on-hover shadow"
                                          src="{{ dessert.image.url }}">
                                   </a>
                                 </div>
                                 <div class="card-body px-0">
                                   <p>
-                                    <a href="javascript:;" class="text-info font-weight-light">{{ dessert.name }}</a>
+                                    <a href="{{ dessert.get_absolute_url }}"
+                                       class="text-info font-weight-light">{{ dessert.name }}</a>
                                   </p>
                                 </div>
                               </div>
                             </div>
-
                             <!-- END Blogs w/ 4 cards w/ image & text & link -->
-                            {% empty %}
-                            <p>There are no desserts with this type.</p>
 
+                          {% empty %}
+                            <p>There are no desserts with this type.</p>
                           {% endfor %}
                         </div>
                       </div>
@@ -111,19 +104,15 @@
                     <hr class="horizontal dark mt-0 mb-5">
                   {% endfor %}
                 </div>
-
               {% else %}
                 <p>There are no dessert types in this hub yet.</p>
               {% endif %}
-
             </div>
           </div>
         </div>
       </div>
     </div>
   </section>
-  <!-- END Testimonials w/ user image & text & info -->
-
 
 {% endblock content %}
 

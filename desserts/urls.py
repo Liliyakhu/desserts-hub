@@ -95,21 +95,9 @@ urlpatterns = [
         toggle_add_dessert_to_cook_list,
         name="toggle-add-dessert",
     ),
-    path(
-        "cooks/",
-        CookListView.as_view(),
-        name="cook-list"
-    ),
-    path(
-        "cooks/<int:pk>/",
-        CookDetailView.as_view(),
-        name="cook-detail"
-    ),
-    path(
-        "cooks/create/",
-        CookCreateView.as_view(),
-        name="cook-create"
-    ),
+    path("cooks/", CookListView.as_view(), name="cook-list"),
+    path("cooks/<int:pk>/", CookDetailView.as_view(), name="cook-detail"),
+    path("cooks/create/", CookCreateView.as_view(), name="cook-create"),
     path(
         "cooks/<int:pk>/update/",
         CookUpdateView.as_view(),

@@ -26,6 +26,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("desserts.urls", namespace="desserts")),
     # path("accounts/", include("django.contrib.auth.urls"))
-    path('accounts/login/', UserLoginView.as_view(), name='login'),
-    path('accounts/logout/', logout_view, name='logout'),
+    path("accounts/login/", UserLoginView.as_view(), name="login"),
+    path("accounts/logout/", logout_view, name="logout"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

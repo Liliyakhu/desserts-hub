@@ -18,7 +18,9 @@ class DessertType(models.Model):
 
 class Cook(AbstractUser):
     years_of_experience = models.IntegerField(default=0)
-    image = models.ImageField(default="images/default_cook.png", upload_to="images/")
+    image = models.ImageField(
+        default="images/default_cook.png", upload_to="images/"
+    )
 
     class Meta:
         ordering = ["username"]
@@ -43,13 +45,17 @@ class Dessert(models.Model):
     name = models.CharField(max_length=50, unique=True)
     description = models.TextField()
     price = models.DecimalField(max_digits=5, decimal_places=2)
-    image = models.ImageField(default="images/default_dessert.png", upload_to="images/")
+    image = models.ImageField(
+        default="images/default_dessert.png", upload_to="images/"
+    )
     dessert_type = models.ForeignKey(
         DessertType,
         on_delete=models.CASCADE,
         related_name="desserts",
     )
-    cooks = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="desserts")
+    cooks = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, related_name="desserts"
+    )
 
     ingredients = models.ManyToManyField(Ingredient, related_name="desserts")
 
@@ -58,5 +64,3 @@ class Dessert(models.Model):
 
     def get_absolute_url(self):
         return reverse("desserts:dessert-detail", kwargs={"pk": self.pk})
-
-

@@ -7,7 +7,7 @@ from desserts.forms import (
     CookSearchForm,
     DessertSearchForm,
     DessertTypeSearchForm,
-    IngredientSearchForm
+    IngredientSearchForm,
 )
 
 
@@ -19,7 +19,8 @@ class FormsTests(TestCase):
             "password2": "user12test",
             "first_name": "Test first",
             "last_name": "Test last",
-            "years_of_experience": 2
+            "years_of_experience": 2,
+            "image": None,
         }
         form = CookCreationForm(data=form_data)
         self.assertTrue(form.is_valid())
@@ -29,8 +30,7 @@ class FormsTests(TestCase):
 class PrivateCookTests(TestCase):
     def setUp(self) -> None:
         self.user = get_user_model().objects.create_user(
-            username="test",
-            password="password123"
+            username="test", password="password123"
         )
         self.client.force_login(self.user)
 
@@ -41,14 +41,17 @@ class PrivateCookTests(TestCase):
             "password2": "user12test",
             "first_name": "Test first",
             "last_name": "Test last",
-            "years_of_experience": 2
+            "years_of_experience": 2,
         }
         self.client.post(reverse("desserts:cook-create"), data=form_data)
         new_user = get_user_model().objects.get(username=form_data["username"])
 
         self.assertEqual(new_user.first_name, form_data["first_name"])
         self.assertEqual(new_user.last_name, form_data["last_name"])
-        self.assertEqual(new_user.years_of_experience, form_data["years_of_experience"])
+        self.assertEqual(
+            new_user.years_of_experience,
+            form_data["years_of_experience"]
+        )
 
     def test_update_cook_experience(self):
         new_user = get_user_model().objects.create_user(
@@ -56,21 +59,16 @@ class PrivateCookTests(TestCase):
             password="user12test",
             first_name="Test first",
             last_name="Test last",
-            years_of_experience=2
+            years_of_experience=2,
         )
-        form_data = {
-            "years_of_experience": 2
-        }
-        self.client.post(reverse(
-            "desserts:cook-update",
-            args=[new_user.id]),
-            data=form_data
+        form_data = {"years_of_experience": 2}
+        self.client.post(
+            reverse("desserts:cook-update", args=[new_user.id]), data=form_data
         )
         updated_user = get_user_model().objects.get(id=new_user.id)
 
         self.assertEqual(
-            updated_user.years_of_experience,
-            form_data["years_of_experience"]
+            updated_user.years_of_experience, form_data["years_of_experience"]
         )
 
 

@@ -1,6 +1,10 @@
 from django import forms
 from django.contrib.auth import get_user_model, password_validation
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UsernameField
+from django.contrib.auth.forms import (
+    UserCreationForm,
+    AuthenticationForm,
+    UsernameField,
+)
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
@@ -14,23 +18,30 @@ from desserts.models import Ingredient, Dessert, Cook, DessertType
 class UserLoginForm(AuthenticationForm):
     username = UsernameField(
         widget=forms.TextInput(
-            attrs={"class": "form-control form-control-lg", "placeholder": "Username"}
+            attrs={
+                "class": "form-control form-control-lg",
+                "placeholder": "Username"
+            }
         )
     )
     password = forms.CharField(
         label=_("Password"),
         strip=False,
-        widget=forms.PasswordInput(attrs={"class": "form-control form-control-lg", "placeholder": "Password"}),
+        widget=forms.PasswordInput(
+            attrs={
+                "class": "form-control form-control-lg",
+                "placeholder": "Password"
+            }
+        ),
     )
     remember_me = forms.BooleanField(
         required=False,
         initial=False,
         widget=forms.CheckboxInput(
-            attrs={
-                "class": "form-check-input"
-            }
-        )
+            attrs={"class": "form-check-input"}
+        ),
     )
+
 
 # DESSERT TYPE FORMS
 
@@ -43,9 +54,9 @@ class DessertTypeSearchForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 "class": "form-control form-control-lg",
-                "placeholder": "Search by name"
+                "placeholder": "Search by name",
             }
-        )
+        ),
     )
 
 
@@ -59,7 +70,7 @@ class DessertTypeForm(forms.ModelForm):
                 "class": "form-control form-control-lg mb-3",
                 "placeholder": "Name"
             }
-        )
+        ),
     )
 
     class Meta:
@@ -78,9 +89,9 @@ class IngredientSearchForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 "class": "form-control form-control-lg",
-                "placeholder": "Search by name"
+                "placeholder": "Search by name",
             }
-        )
+        ),
     )
 
 
@@ -94,7 +105,7 @@ class IngredientForm(forms.ModelForm):
                 "class": "form-control form-control-lg mb-3",
                 "placeholder": "Name"
             }
-        )
+        ),
     )
 
     class Meta:
@@ -113,9 +124,9 @@ class DessertSearchForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 "class": "form-control form-control-lg",
-                "placeholder": "Search by name"
+                "placeholder": "Search by name",
             }
-        )
+        ),
     )
 
 
@@ -129,7 +140,7 @@ class DessertForm(forms.ModelForm):
                 "class": "form-control form-control-lg mb-3",
                 "placeholder": "Name"
             }
-        )
+        ),
     )
 
     description = forms.CharField(
@@ -137,9 +148,9 @@ class DessertForm(forms.ModelForm):
         widget=forms.Textarea(
             attrs={
                 "class": "form-control form-control-lg mb-3",
-                "placeholder": "A few words about this dessert"
+                "placeholder": "A few words about this dessert",
             }
-        )
+        ),
     )
 
     price = forms.DecimalField(
@@ -150,9 +161,9 @@ class DessertForm(forms.ModelForm):
                 "max": "100",
                 "step": "0.01",
                 "class": "form-control form-control-lg mb-3",
-                "placeholder": "Price for 100g, $"
+                "placeholder": "Price for 100g, $",
             }
-        )
+        ),
     )
 
     dessert_type = forms.ModelChoiceField(
@@ -162,9 +173,9 @@ class DessertForm(forms.ModelForm):
         widget=forms.Select(
             attrs={
                 "class": "form-select form-select-lg mb-3",
-                "placeholder": "Choose a dessert type."
+                "placeholder": "Choose a dessert type.",
             }
-        )
+        ),
     )
 
     cooks = forms.ModelMultipleChoiceField(
@@ -191,8 +202,11 @@ class DessertForm(forms.ModelForm):
         label=_("Image:"),
         required=False,
         widget=forms.FileInput(
-            attrs={"class": "form-control form-control-lg mb-3", "placeholder": "Image"}
-        )
+            attrs={
+                "class": "form-control form-control-lg mb-3",
+                "placeholder": "Image"
+            }
+        ),
     )
 
     class Meta:
@@ -209,57 +223,75 @@ class CookCreationForm(UserCreationForm):
         # label="<span style='color: red;'>Name</span>",
         label=_("Username*"),
         widget=forms.TextInput(
-            attrs={"class": "form-control form-control-lg mb-3", "placeholder": "Username"}
+            attrs={
+                "class": "form-control form-control-lg mb-3",
+                "placeholder": "Username",
+            }
         ),
-        # help_text=_("150 characters or fewer. Letters, digits, and @/./+/-/_ only."),
+        # help_text=_("150 characters or fewer.
+        # Letters, digits, and @/./+/-/_ only."),
     )
     years_of_experience = forms.IntegerField(
         initial=0,
         required=False,
         widget=forms.NumberInput(
-            attrs={"class": "form-control form-control-lg mb-3", "placeholder": "Years of Experience"}
-        )
+            attrs={
+                "class": "form-control form-control-lg mb-3",
+                "placeholder": "Years of Experience",
+            }
+        ),
     )
 
     image = forms.ImageField(
         # initial="Image",
         required=False,
         widget=forms.FileInput(
-            attrs={"class": "form-control form-control-lg mb-3", "placeholder": "Image"}
-        )
+            attrs={
+                "class": "form-control form-control-lg mb-3",
+                "placeholder": "Image"}
+        ),
     )
 
     first_name = forms.CharField(
         required=False,
         widget=forms.TextInput(
-            attrs={"class": "form-control form-control-lg mb-3", "placeholder": "First Name"}
-        )
+            attrs={
+                "class": "form-control form-control-lg mb-3",
+                "placeholder": "First Name",
+            }
+        ),
     )
 
     last_name = forms.CharField(
         required=False,
         widget=forms.TextInput(
-            attrs={"class": "form-control form-control-lg mb-3", "placeholder": "Last Name"}
-        )
+            attrs={
+                "class": "form-control form-control-lg mb-3",
+                "placeholder": "Last Name",
+            }
+        ),
     )
 
     password1 = forms.CharField(
         label=_("Password*:"),
         strip=False,
         widget=forms.PasswordInput(
-            attrs={"class": "form-control form-control-lg mb-3", "placeholder": "Password"}
-        ),
-        # help_text=""
-        # help_text=password_validation.password_validators_help_text_html(),
+            attrs={
+                "class": "form-control form-control-lg mb-3",
+                "placeholder": "Password",
+            }
+        )
     )
 
     password2 = forms.CharField(
         label=_("Confirm Password*:"),
         # strip=False,
         widget=forms.PasswordInput(
-            attrs={"class": "form-control form-control-lg mb-3", "placeholder": "Password"}
+            attrs={
+                "class": "form-control form-control-lg mb-3",
+                "placeholder": "Password",
+            }
         ),
-        # help_text="Enter the same password as before, for verification."
     )
 
     class Meta(UserCreationForm.Meta):
@@ -271,10 +303,13 @@ class CookCreationForm(UserCreationForm):
             "image",
         )
 
-    def clean_years_of_experience(self):  # this logic is optional, but possible
-        return validate_years_of_experience(self.cleaned_data["years_of_experience"])
+    def clean_years_of_experience(self):
+        # this logic is optional, but possible
+        return validate_years_of_experience(
+            self.cleaned_data["years_of_experience"]
+        )
 
-    def clean_image(self):  # this logic is optional, but possible
+    def clean_image(self):
         return validate_image(self.cleaned_data["image"])
 
 
@@ -283,30 +318,42 @@ class CookUpdateForm(forms.ModelForm):
         initial=0,
         required=False,
         widget=forms.NumberInput(
-            attrs={"class": "form-control form-control-lg mb-3", "placeholder": "Years of Experience"}
-        )
+            attrs={
+                "class": "form-control form-control-lg mb-3",
+                "placeholder": "Years of Experience",
+            }
+        ),
     )
 
     image = forms.ImageField(
         # initial="Image",
         required=False,
         widget=forms.FileInput(
-            attrs={"class": "form-control form-control-lg mb-3", "placeholder": "Image"}
-        )
+            attrs={
+                "class": "form-control form-control-lg mb-3",
+                "placeholder": "Image"
+            }
+        ),
     )
 
     first_name = forms.CharField(
         required=False,
         widget=forms.TextInput(
-            attrs={"class": "form-control form-control-lg mb-3", "placeholder": "First Name"}
-        )
+            attrs={
+                "class": "form-control form-control-lg mb-3",
+                "placeholder": "First Name",
+            }
+        ),
     )
 
     last_name = forms.CharField(
         required=False,
         widget=forms.TextInput(
-            attrs={"class": "form-control form-control-lg mb-3", "placeholder": "Last Name"}
-        )
+            attrs={
+                "class": "form-control form-control-lg mb-3",
+                "placeholder": "Last Name",
+            }
+        ),
     )
 
     class Meta:
@@ -314,30 +361,21 @@ class CookUpdateForm(forms.ModelForm):
         fields = ["years_of_experience", "image", "first_name", "last_name"]
 
     def clean_years_of_experience(self):
-        return validate_years_of_experience(self.cleaned_data["years_of_experience"])
+        return validate_years_of_experience(
+            self.cleaned_data["years_of_experience"]
+        )
 
     def clean_image(self):
         return validate_image(self.cleaned_data["image"])
-
-
-# class CookImageUpdateForm(forms.ModelForm):
-#     image = forms.ImageField(
-#         widget=forms.FileInput()
-#     )
-#
-#     class Meta:
-#         model = Cook
-#         fields = ["image"]
-#
-#     def clean_image(self):
-#         return validate_image(self.cleaned_data["image"])
 
 
 def validate_years_of_experience(
     years_of_experience,
 ):  # regex validation is also possible here
     if len(str(years_of_experience)) >= 3:
-        raise ValidationError("Years of experience should be 1 or 2 digital number")
+        raise ValidationError(
+            "Years of experience should be 1 or 2 digital number"
+        )
     elif years_of_experience < 0:
         raise ValidationError("Years of experience can't be negative")
 
@@ -358,8 +396,7 @@ class CookSearchForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 "class": "form-control form-control-lg",
-                "placeholder": "Search by username"
+                "placeholder": "Search by username",
             }
-        )
+        ),
     )
-

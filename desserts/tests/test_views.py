@@ -142,8 +142,7 @@ class PrivateDessertTest(TestCase):
 
     def test_search_desserts(self):
         response = self.client.get(
-            reverse("desserts:dessert-list"),
-            {"name": "test_name_one"}
+            reverse("desserts:dessert-list"), {"name": "test_name_one"}
         )
         self.assertContains(response, self.first_dessert.name)
         self.assertNotContains(response, self.second_dessert.name)
@@ -203,8 +202,7 @@ class PrivateCookTest(TestCase):
 
     def test_search_cooks(self):
         response = self.client.get(
-            reverse("desserts:cook-list"),
-            {"username": "test_user_1"}
+            reverse("desserts:cook-list"), {"username": "test_user_1"}
         )
         self.assertContains(response, self.user_one.username)
         self.assertNotContains(response, self.user_two.username)
