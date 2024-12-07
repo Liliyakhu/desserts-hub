@@ -1,11 +1,10 @@
 # Dessert Hub
 
-
 **DessertHub** is a web application that connects dessert 
 enthusiasts by allowing users to share, discover recipes from around the world. 
 Whether you're a professional pastry chef or a home baker, 
 Dessert Hub provides a platform to explore your passion for sweet creations.
-___________
+
 ## Features
 + **User Registration and Authentication:** 
 Secure user accounts with login and "Remember Me" functionality.
@@ -13,17 +12,17 @@ Secure user accounts with login and "Remember Me" functionality.
 their own dessert, dessert type and ingredients. 
 + **Search:** Search user by username, dessert, dessert type and ingredient by name.
 + **Responsive Design:** Fully functional on both desktop and mobile devices.
-_____________
+
 ## Technologies Used
 + **Backend:** Python, Django
 + **Frontend:** HTML5, CSS3, JavaScript
 + **Database:** SQLite3
-_________________
+
 ## Installation
 ### Prerequisites
 1. Python 3.8 or higher
 2. SQLite3
-_______________________
+
 ## Setup
 1. Clone the repository:
 ```
@@ -50,7 +49,7 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 6. Open your browser and navigate to http://127.0.0.1:8000.
-__________________________
+
 ## Usage
 + Ask existing user to create your account and log in with your credentials.
 + Browse recipes by category or search for specific desserts.
