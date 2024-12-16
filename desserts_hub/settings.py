@@ -29,12 +29,12 @@ if os.path.isfile(dotenv_file):
     dotenv.load_dotenv(dotenv_file)
 
 # UPDATE secret key
-SECRET_KEY = os.environ['SECRET_KEY']
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "django-insecure-cti2$x%79(y#bb38fnvejcc++m!nn-q!zd%)b+h!6_e$dghl-sm")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DJANGO_DEBUG", "") != "False"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
 
 # Application definition
