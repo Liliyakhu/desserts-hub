@@ -14,28 +14,14 @@ from pathlib import Path
 import os
 import dotenv
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# Add .env variables anywhere before SECRET_KEY
-dotenv_file = os.path.join(BASE_DIR, ".env")
-if os.path.isfile(dotenv_file):
-    dotenv.load_dotenv(dotenv_file)
-
-# UPDATE secret key
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "django-insecure-cti2$x%79(y#bb38fnvejcc++m!nn-q!zd%)b+h!6_e$dghl-sm")
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DJANGO_DEBUG", "") != "False"
-
-ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
-
+SECRET_KEY = "django-insecure-cti2$x%79(y#bb38fnvejcc++m!nn-q!zd%)b+h!6_e$dghl-sm"
 
 # Application definition
 
@@ -51,6 +37,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -78,18 +65,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "desserts_hub.wsgi.application"
-
-
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
