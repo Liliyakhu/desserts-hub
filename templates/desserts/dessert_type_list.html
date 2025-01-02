@@ -80,8 +80,10 @@
                               <div class="card card-plain card-blog">
                                 <div class="card-image border-radius-lg position-relative">
                                   <a href="{{ dessert.get_absolute_url }}">
+                                    {#                                    <img class="w-100 border-radius-lg move-on-hover shadow"#}
+                                    {#                                         src="{{ dessert.image.url }}">#}
                                     <img class="w-100 border-radius-lg move-on-hover shadow"
-                                         src="{{ dessert.image.url }}">
+                                         src="{% static 'img/default_dessert.png' %}" alt="dessert">
                                   </a>
                                 </div>
                                 <div class="card-body px-0">
